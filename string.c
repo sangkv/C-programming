@@ -3,8 +3,7 @@
 
 #define pi 3.14;
 
-
-unsigned long int length(char A[])
+unsigned long int length(const char A[])
 {
 	unsigned long int i = 0;
 	while(A[i] != '\0')
@@ -14,49 +13,58 @@ unsigned long int length(char A[])
 	return i;
 }
 
-void concat(char A[], char B[])
+char* concat(const char A[], const char B[])
 {
 	unsigned long int lenA = length(A);
 	unsigned long int lenB = length(B);
 	
-	char C[lenA + lenB + 1];
+	char* p = (char*) malloc((lenA + lenB + 1)*sizeof(char));
 	
-	
-	unsigned long int k = 0;
-	for(unsigned long int i = 0; i<lenA; i++)
+	if(p==NULL)
 	{
-		C[k] = A[i];
-		k++;
+		return NULL;
 	}
-	for(unsigned long int j = 0; j<lenB; j++)
+	else
 	{
-		C[k] = B[j];
-		k++;
+		unsigned long int k = 0;
+		for(unsigned long int i = 0; i<lenA; i++)
+		{
+			p[k] = A[i];
+			k++;
+		}
+		for(unsigned long int j = 0; j<lenB; j++)
+		{
+			p[k] = B[j];
+			k++;
+		}
+		p[k] = '\0';
+		
+		return p;
 	}
-	C[k] = '\0';
-	
-	
-	for(unsigned long int n = 0; n <= k; n++)
-	{
-		A[n] = C[n]; /* Kích thước mảng A đã vượt quá kích thước khởi tạo, liệu bộ nhớ vượt mức có ghi đè lên dữ liệu khác hoặc chương trình gây ra lỗi máy tính??? */
-	}
-
-	
 }
 
 int main(int argc, char* agrv[])
 {
-	
-	
 	char A[] = "Toi_yeu_";
 	char B[] = "Viet_Nam";
-	printf("\n%lu", length(A));
-	printf("\n%lu", length(B));	
 	
-	concat(A,B); // Viết hàm nối chuỗi B vào cuối chuỗi A
-	printf("\n%lu", length(A));
+	printf("A = %s",A);
+	printf("\nlength A = %lu", length(A));
+	printf("\n\nB = %s",B);
+	printf("\nlength B = %lu", length(B));	
 	
-	printf("\nA = %s",A);
+	char* p = concat(A,B);
+	if(p==NULL)
+	{
+		printf("\n\nNot enough memory!!!");
+	}
+	else
+	{
+		printf("\n\nA + B = %s",p);
+		printf("\nleng A + B = %lu", length(p));
+		free(p);
+		p = NULL;
+	}
 	
 	return 0;
 }
