@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-#define pi 3.14;
+#define pi 3.14
 
 
 long int giaithua(int k)

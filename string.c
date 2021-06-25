@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-#define pi 3.14;
+#define pi 3.14
 
 unsigned long int length(const char A[])
 {
