@@ -36,6 +36,8 @@ int main(int argc, char* agrv[])
 	printf("\nq = %d",q);
 	printf("\nk = %f",k);
 	
+	free(p);
+	
 
 	return 0;
 }

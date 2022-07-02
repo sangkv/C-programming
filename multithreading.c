@@ -6,40 +6,46 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-
 #include<pthread.h>
 
-#define NUM_THREADS 5
-
-void* printHello(void* threadID)
+typedef struct
 {
-	long int tid = (long int)threadID;
-	printf("\nHello World! It's me, thread #%ld", tid);
-	pthread_exit(NULL);
+	char* name;
+	char* email;
+} data;
+
+void* testThread(void* arg)
+{
+	printf("Information: \n");
+	data* p = (data*) arg;
+	printf("Name: %s\n", p->name);
+	printf("Email: %s\n", p->email);
+	
+	/* return NULL; */
+	return arg;
 }
 
 int main(int argc, char* argv[])
 {
-	/* Khai báo mảng các threads */
-	pthread_t threads[NUM_THREADS];
+	pthread_t thread1;
+	pthread_t thread2;
 	
-	/* Sử dụng các threads */
-	for(long int t=0;t<NUM_THREADS;t++)
-	{
-		printf("\nIn main: creating thread %ld", t);
-		int rc = pthread_create(&threads[t], NULL, printHello, (void*)t);
-		if(rc)
-		{
-			printf("\nERROR; return code from pthread_create() is %d", rc);
-			exit(-1);
-		}
-	}
+	data data1 = {"Sang", "sangkv.work@gmail.com"};
+	data data2 = {"Kim", "kim.van.sang@rewardstyle.com"};
 	
-	/* Last thing that main() should do */
-	pthread_exit(NULL);
+	int status = 0;
+	status = pthread_create(&thread1, NULL, testThread, (void*) &data1);
+	status = pthread_create(&thread2, NULL, testThread, (void*) &data2);
+	
+	void* result = NULL;
+	status = pthread_join(thread1, &result);
+	printf("Result: %s, %s\n", ((data*)result)->name, ((data*)result)->email);
+	status = pthread_join(thread2, &result);
+	printf("Result: %s, %s\n", ((data*)result)->name, ((data*)result)->email);
+	
 	
 	return 0;
 }
 
-/* Compile: gcc -o multithreading multithreading.c -lpthread
+/* Compile: gcc multithreading.c -o multithreading -lpthread
  */

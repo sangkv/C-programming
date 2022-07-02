@@ -31,6 +31,7 @@ int main(int argc, char* agrv[])
 				printf("\np[%d] = %d",i,p[i]);
 			}
 		}
+		free(p);
 	}
 	
 	fclose(fp);
